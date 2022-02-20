@@ -41,6 +41,12 @@ namespace Bravo
                     case '3':
                         Update(employees);
                         break;
+                    case '4':
+                        Delete(employees);
+                        break;
+                    case '5':
+                        Search(employees);
+                        break;
                     case '6':
                         Display(employees);
                         break;
@@ -80,6 +86,26 @@ namespace Bravo
             Console.Write("Enter the insertion location: ");
             int location = int.Parse(Console.ReadLine());
             employees[location] = new Employee(firstName, lastName);
+        }
+
+        static void Delete(List<Employee> employees)
+        {
+            Console.Write("Enter the employee ID to delete: ");
+            int id = int.Parse(Console.ReadLine());
+            employees.RemoveAt(id);
+        }
+
+        static void Search(List<Employee> employees)
+        {
+            Console.Write("Enter first name: ");
+            string firstName = Console.ReadLine();
+            for (int x = 0; x < employees.Count(); x++)
+            {
+                if (employees[x].FirstName == firstName)
+                {
+                    Console.WriteLine(x + ": " + employees[x].FirstName + " " + employees[x].LastName + ".");
+                }
+            }
         }
 
         static void Display(List<Employee> employees)
