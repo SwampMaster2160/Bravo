@@ -8,13 +8,19 @@ namespace Bravo
 {
     class Employee
     {
-        public string FirstName;
-        public string LastName;
+        public string FirstName = "";
+        public string LastName = "";
+        public string Email = "";
+        public string PhoneNumber = "";
+        public string Address = "";
 
-        public Employee(string firstName, string lastName)
+        public Employee(string firstName, string lastName, string email, string phoneNumber, string address)
         {
             FirstName = firstName;
             LastName = lastName;
+            Email = email;
+            PhoneNumber = phoneNumber;
+            Address = address;
         }
     }
 
@@ -79,8 +85,11 @@ namespace Bravo
         {
             try
             {
+                // Get the count from the console
                 int count = employees.Count;
+                // Get the length of the list
                 int returnVal = int.Parse(Console.ReadLine());
+                // If isPickLocation is set then adjust the length
                 if (isPickLocation)
                 {
                     if (count == 0)
@@ -90,6 +99,7 @@ namespace Bravo
                     }
                     count -= 1;
                 }
+                // Boundry check
                 if (returnVal < 0)
                 {
                     Console.WriteLine("Error: index is negitive, it must be at least 0.");
@@ -102,11 +112,13 @@ namespace Bravo
                 }
                 return returnVal;
             }
+            // If the user does not enter a valid number eg. "v67t57v7eb4v"
             catch (FormatException)
             {
                 Console.WriteLine("Error: invalid number entered.");
                 return -1;
             }
+            // If the number is outside what can fit inside an int
             catch (OverflowException)
             {
                 Console.WriteLine("Error: number entered is outside of valid range.");
@@ -121,8 +133,26 @@ namespace Bravo
             string firstName = Console.ReadLine();
             Console.Write("Enter last name: ");
             string lastName = Console.ReadLine();
+            // Get optional stuff
+            Console.Write("Enter email address (optional): ");
+            string email = Console.ReadLine();
+            Console.Write("Enter mobile phone number (optional): ");
+            string phoneNumber = Console.ReadLine();
+            Console.Write("Enter home address (optional): ");
+            string address = Console.ReadLine();
+            // Check for empty required feilds
+            if (firstName.Count() == 0)
+            {
+                System.Console.WriteLine("Error: first name may not be blank.");
+                return;
+            }
+            if (lastName.Count() == 0)
+            {
+                System.Console.WriteLine("Error: last name may not be blank.");
+                return;
+            }
             // Add to list
-            employees.Add(new Employee(firstName, lastName));
+            employees.Add(new Employee(firstName, lastName, email, phoneNumber, address));
         }
 
         static void Insert(List<Employee> employees)
@@ -136,14 +166,32 @@ namespace Bravo
             string firstName = Console.ReadLine();
             Console.Write("Enter last name: ");
             string lastName = Console.ReadLine();
+            // Get optional stuff
+            Console.Write("Enter email address (optional): ");
+            string email = Console.ReadLine();
+            Console.Write("Enter mobile phone number (optional): ");
+            string phoneNumber = Console.ReadLine();
+            Console.Write("Enter home address (optional): ");
+            string address = Console.ReadLine();
+            // Check for empty required feilds
+            if (firstName.Count() == 0)
+            {
+                System.Console.WriteLine("Error: first name may not be blank.");
+                return;
+            }
+            if (lastName.Count() == 0)
+            {
+                System.Console.WriteLine("Error: last name may not be blank.");
+                return;
+            }
             // Insert
-            employees.Insert(insertLocation, new Employee(firstName, lastName));
+            employees.Insert(insertLocation, new Employee(firstName, lastName, email, phoneNumber, address));
         }
 
         static void Update(List<Employee> employees)
         {
             // Get location
-            Console.Write("Enter the insertion location: ");
+            Console.Write("Enter the employee ID: ");
             int location = GetValidListIndex(employees, true);
             if (location == -1) return;
             // Get name
@@ -151,8 +199,24 @@ namespace Bravo
             string firstName = Console.ReadLine();
             Console.Write("Enter last name: ");
             string lastName = Console.ReadLine();
+            // Get optional stuff
+            Console.Write("Enter email address (optional): ");
+            string email = Console.ReadLine();
+            Console.Write("Enter mobile phone number (optional): ");
+            string phoneNumber = Console.ReadLine();
+            Console.Write("Enter home address (optional): ");
+            string address = Console.ReadLine();
             // Update
-            employees[location] = new Employee(firstName, lastName);
+            Employee employee = employees[location];
+            if (0 < firstName.Count()) employee.FirstName = firstName;
+            if (0 < lastName.Count()) employee.LastName = lastName;
+            if (0 < email.Count()) employee.Email = email;
+            if (0 < phoneNumber.Count()) employee.PhoneNumber = phoneNumber;
+            if (0 < address.Count()) employee.Address = address;
+            // Check for removal
+            if (email == "remove") employee.Email = "";
+            if (phoneNumber == "remove") employee.PhoneNumber = "";
+            if (address == "remove") employee.Address = "";
         }
 
         static void Delete(List<Employee> employees)
@@ -196,7 +260,11 @@ namespace Bravo
                 for (int x = 0; x < employees.Count; x++)
                 {
                     Employee employee = employees[x];
-                    Console.WriteLine(x + ": " + employee.FirstName + " " + employee.LastName + ".");
+                    Console.Write(x + ": " + employee.FirstName + " " + employee.LastName);
+                    if (0 < employee.Email.Count()) Console.Write(", Email: " + employee.Email);
+                    if (0 < employee.PhoneNumber.Count()) Console.Write(", Ph: " + employee.PhoneNumber);
+                    if (0 < employee.Address.Count()) Console.Write(", Address: " + employee.Address);
+                    Console.WriteLine(".");
                 }
             }
         }
